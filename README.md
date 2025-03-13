@@ -31,15 +31,22 @@ To set up and run the project locally, follow these steps:
 ```bash
 git clone https://github.com/kanagajayasankar/Voting_System.git
 cd Voting_System
-
-
+```
+### **2️⃣ Install Dependencies** 
+If using Python, install required libraries:
+```bash
 pip install -r requirements.txt
+```
 
+### **3️⃣ Run the application** 
+```bash
 python main.py
-
+```
+### **4️⃣ Access the Application** 
+```bash
 flask run
-
-If it's a web-based app, open http://127.0.0.1:5000/ in your browser
-
-
+```
+## If it's a web-based app, open http://127.0.0.1:5000/ in your browser
+## If it's a command-line app, follow the on-screen instructions.
+## This project is open-source and available under the MIT License.
 
