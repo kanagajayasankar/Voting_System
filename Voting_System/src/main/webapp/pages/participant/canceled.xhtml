@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    template="/WEB-INF/templates/page-layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="content" >
+        <div class="container ">
+            <div class="jumbotron text-center t-box">
+                <h1 class="display-3">You have canceled to vote</h1>
+                <h4>Don't worry, the token can be used later to vote</h4>
+                <hr></hr>
+                <p class="lead"><strong>Remember to close this page by clicking </strong> <a href="javascript:close_window();">here</a> </p>
+
+            </div>
+        </div>
+    </ui:define>
+
+    <ui:define name="scripts">
+        <script type="text/javascript">
+            function close_window() {
+                var win = window.open("about:blank", "_self");
+                win.close();
+            }
+        </script>
+    </ui:define>
+</ui:composition>

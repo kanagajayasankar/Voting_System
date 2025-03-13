@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    template="/WEB-INF/templates/page-layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"    >
+    <f:metadata>
+        <f:viewParam name="token" value="#{voterBean.token}" />
+    </f:metadata>
+    <ui:define name="exception">
+        <input type="hidden" id="toastMessage" value="#{voterBean.pageException}" />
+    </ui:define>
+
+    <ui:define name="content" >
+        <div class="votepage container mt-4">
+            <div class="m-5">
+                <b>
+                    Enter your token:
+                </b>
+                <form method="GET">
+                    <div class="row votepage-header">
+                        <input type="text" class="form-control text-center col-sm-6" placeholder="Token" value="#{voterBean.token}" name="token" />
+                       
+                    </div>
+                    <div class="row votepage-header">
+                        <input type="submit" value="Enter Token" class="btn btn-primary col-lg-2 col-md-3"/>
+                    </div>
+                </form>
+                
+                <h:form rendered="#{voterBean.pollInfo != null}">
+                    <div class="row votepage-questions">
+                        <ui:repeat value="#{voterBean.pollInfo.questions}" var="question" varStatus="questionStatus">
+                            <div class="votepage-question col-lg-6 mt-4">
+                                <div class="title">
+                                    ##{questionStatus.index + 1}
+                                    #{question.title}
+                                    <h:panelGroup rendered="#{question.maxAnswers==1}">
+                                        <small>(Please choose one answer)</small>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{question.maxAnswers>1}">
+                                        <small>(You can select up to #{question.maxAnswers} answers)</small>
+                                    </h:panelGroup>
+                                </div> 
+                                <ul class="vote-list m-t small-list">
+                                    <h:selectManyCheckbox value = "#{question.selectedAnswer}"> 
+                                        <f:selectItems value="#{question.itemsList}" var="item" itemLabel="#{item.name}" itemValue="#{item.id}" itemDescription="#{item.description}" />
+                                    </h:selectManyCheckbox>
+                                </ul>
+                            </div>
+                        </ui:repeat>
+                    </div>
+                    <div class="row votepage-header mt-4">
+                        <a href="canceled.xhtml" class="btn btn-secondary offset-md-6 offset-lg-8 col-lg-2 col-md-3">Cancel</a>
+                        <h:commandButton value="Submit" class="btn btn-primary col-lg-2 col-md-3" action="#{voterBean.submitVote()}"/>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+    <ui:define name="scripts">
+        <script type="text/javascript">
+            $(function () {
+                $("input[type=checkbox]").prop("checked", false);
+            });
+        </script>
+    </ui:define>
+</ui:composition>
