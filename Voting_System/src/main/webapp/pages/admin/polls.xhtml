@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    template="/WEB-INF/templates/page-layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough">   
+    <ui:define name="exception">
+        <input type="hidden" id="toastMessage" value="#{orgPollBean.pageException}" />
+    </ui:define>
+    <ui:define name="styles">
+        <h:outputStylesheet name="tempusdominus-bootstrap-4.min.css" library="css" />
+    </ui:define>
+    <ui:define name="header">
+        <ui:include src="/pages/admin/menus.xhtml" />
+    </ui:define>
+    <ui:define name="content">
+
+        <main role="main" class="dashboard col-md-9 ml-sm-auto col-lg-10 pt-3 px-4" >
+            <h:form>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                            &nbsp;ADMIN
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+
+                            &nbsp;#{strings.pollList}
+                        </li>    
+                  </ul>
+                
+                <!-- Latest allPolls -->
+                <div class="poll row pb-4">
+                    <ui:repeat value="#{orgPollBean.allPolls}" var="poll">
+                       <!-- Delete Modal -->
+                        <div class="modal fade" id="delModal_#{poll.pollId}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">#{strings.removePoll}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <i class="fas fa-exclamation-triangle text-warning mr-2 "></i>#{strings.deleteConfirmation}  
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light btn-sm" data-dismiss="modal"> <i class="fas fa-times mr-2 "></i>#{strings.close} </button>
+                                        <h:commandButton value="#{strings.delete}" class="btn btn-danger btn-sm" action='#{orgPollBean.removeAdminPoll(poll.pollId)}'/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Edit Modal -->
+                        <div class="modal fade" id="editPoll_#{poll.pollId}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">#{strings.editPoll}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label>#{strings.title}</label>
+                                            <h:inputText class="form-control" value="#{poll.title}" ></h:inputText>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>#{strings.pollDescription}</label>
+                                            <h:inputTextarea class="form-control" value="#{poll.description}" ></h:inputTextarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editStartDateInput_#{poll.pollId}">#{strings.startDate}</label>
+                                            <div class="input-group date" id="editStartDateInput_#{poll.pollId}" data-target-input="nearest">
+                                                <h:inputText class="form-control datetimepicker-input" value="#{poll.startDateString}"  ></h:inputText>
+                                                <div class="input-group-append" data-target="#editStartDateInput_#{poll.pollId}" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editEndDateInput_#{poll.pollId}">#{strings.endDate}</label>
+                                            <div class="input-group date" id="editEndDateInput_#{poll.pollId}" data-target-input="nearest">
+                                                <h:inputText class="form-control datetimepicker-input" value="#{poll.endDateString}" ></h:inputText>
+                                                <div class="input-group-append" data-target="#editEndDateInput_#{poll.pollId}" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:commandButton value="#{strings.edit}" class="btn btn-primary" action='#{orgPollBean.editPoll(poll)}'/>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">#{strings.close}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Start Poll Modal -->
+                        <div class="modal fade" id="startModal_#{poll.pollId}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">#{strings.startPoll}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label>#{strings.chooseParticipantList}</label>
+                                            <h:selectOneMenu class="form-control" value ="#{poll.startPollDto.voterListName}">
+                                                <f:selectItem itemValue = "" itemLabel = "--#{strings.nothingSelected}--" /> 
+                                                <f:selectItems value="#{orgVoterBean.myParticipantList}" var="thisParticipantList" itemLabel="#{thisParticipantList.name}" itemValue="#{thisParticipantList.name}" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="form-check">
+                                            <h:selectBooleanCheckbox class="form-check-input" value="#{poll.startPollDto.isAnonymous}" />
+                                            <label class="form-check-label">#{strings.anonymous}</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <h:selectBooleanCheckbox class="form-check-input" value="#{poll.startPollDto.autoNotify}" />
+                                            <label class="form-check-label">#{strings.autoNotify}</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:commandButton value="#{strings.start}" class="btn btn-primary" action='#{orgPollBean.startPoll(poll.startPollDto)}'/>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">#{strings.close}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal Extend -->
+                        <div class="modal fade" id="incModal_#{poll.pollId}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">#{strings.extend}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label>#{strings.currentEndDateIs} #{poll.endDateString}</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editExtendDateInput_#{poll.pollId}">#{strings.extendedEndDate}</label>
+                                            <div class="input-group date" id="editExtendDateInput_#{poll.pollId}" data-target-input="nearest">
+                                                <h:inputText class="form-control datetimepicker-input" value="#{poll.extendedDateString}" ></h:inputText>
+                                                <div class="input-group-append" data-target="#editExtendDateInput_#{poll.pollId}" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">#{strings.close}</button>
+                                        <h:commandButton value="#{strings.saveChanges}" class="btn btn-primary" action='#{orgPollBean.extendPoll(poll)}'/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                          <!-- Modal Extend -->
+                        <div class="modal fade" id="viewModal_#{poll.pollId}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-xl" role="document" >
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">#{strings.preview}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <iframe src='preview.xhtml?pollId=#{poll.pollId}' class="preview-iframe">
+                                            
+                                        </iframe>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">#{strings.close}</button>                  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </ui:repeat>
+                    
+                    <p:dataTable value="#{orgPollBean.allPolls}" var="poll">
+                    <p:column headerText="#">
+                        <h:outputText value="#{poll.pollId}"/>
+                    </p:column>
+                    <p:column headerText="#{strings.title}">
+                        <h:outputText value="#{poll.title}"/>
+                    </p:column>
+                    <p:column headerText="#{strings.pollDescription}">
+                        <h:outputText value="#{poll.description}"/>
+                    </p:column>
+                        
+                    <p:column headerText="#{strings.startDate}">
+                        <h:outputText value="#{poll.startDateString}"/>
+                    </p:column>
+                        
+                    <p:column headerText="#{strings.endDate}">
+                        <h:outputText value="#{poll.endDateString}"/>
+                    </p:column>
+                        
+                    <p:column headerText="Status">
+                        <h:outputText class="badge #{orgPollBean.getBadgeType(poll)}" value="#{poll.state}"/>
+                    </p:column>
+                        
+                        <p:column headerText="#{strings.action}">
+                                        <h:panelGroup layout="block" rendered="#{poll.state=='PREPARED' || poll.state=='FINISHED'}">
+                                            <button type="button"  data-toggle="modal" data-target="#delModal_#{poll.pollId}" class="btn btn-light btn-sm">
+                                                <i class="fas fa-trash card-link"></i> #{strings.delete}
+                                            </button>
+                                        </h:panelGroup>
+                        </p:column>
+                        
+                        
+                        
+                    </p:dataTable>
+                    
+                </div>
+
+                <!-- Ends Latest allPolls -->
+
+                <!-- Create Modal -->
+                <div class="modal fade" id="createPollModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">#{strings.createPoll}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>#{strings.title}</label>
+                                    <h:inputText class="form-control" value="#{orgPollBean.createPollInfoDto.title}" ></h:inputText>
+                                </div>
+                                <div class="form-group">
+                                    <label>#{strings.pollDescription}</label>
+                                    <h:inputTextarea class="form-control" value="#{orgPollBean.createPollInfoDto.description}" ></h:inputTextarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="createStartDateInput">#{strings.startDate}</label>
+                                    <div class="input-group date" id="createStartDateInput" data-target-input="nearest">
+                                        <h:inputText class="form-control datetimepicker-input" value="#{orgPollBean.createPollInfoDto.startDateString}"  ></h:inputText>
+                                        <div class="input-group-append" data-target="#createStartDateInput" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="createEndDateInput">#{strings.endDate}</label>
+                                    <div class="input-group date" id="createEndDateInput" data-target-input="nearest">
+                                        <h:inputText class="form-control datetimepicker-input" value="#{orgPollBean.createPollInfoDto.endDateString}" ></h:inputText>
+                                        <div class="input-group-append" data-target="#createEndDateInput" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <h:commandButton value="#{strings.create}" class="btn btn-primary" action='#{orgPollBean.createPoll()}'/>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">#{strings.close}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </main>
+    </ui:define>
+    <ui:define name="scripts">
+        <h:outputScript library = "js" name = "tempusdominus-bootstrap-4.min.js" />
+        <script type="text/javascript">
+            $(function () {
+                $('.input-group.date').datetimepicker();
+            });
+
+            $(document).on('mouseup touchend', function (e) {
+                var container = $(".bootstrap-datetimepicker-widget");
+                if (!container.is(e.target))
+                    if (container.has(e.target).length === 0) {
+                        container.hide();
+                    }
+            });
+
+        </script>
+    </ui:define>
+</ui:composition>
