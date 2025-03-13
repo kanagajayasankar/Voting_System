@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+    template="/WEB-INF/templates/page-layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">   
+    <ui:define name="exception">
+        <input type="hidden" id="toastMessage" value="#{orgVoterBean.pageException}" />
+    </ui:define>
+
+    <ui:define name="header">
+        <ui:include src="/pages/organizer/menus.xhtml" />
+    </ui:define>
+    <ui:define name="content">
+        <main role="main" class="dashboard col-md-9 ml-sm-auto col-lg-10 pt-3 px-4" >
+            <h:form>
+                    <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">&nbsp;Organizer</li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                &nbsp;#{strings.participantList}
+                            </li> 
+                          </ul>
+                    </nav>
+
+                <div class="row pb-4">
+                    <div class="col-lg-12">
+                        <div class="poll row">
+                            <div class=" col-sm-12" data-toggle="collapse" aria-expanded="true">
+                                <div class="col-sm-12 text-right f-l font">
+                                    <button type="button" class="btn btn-primary btn-sm " data-toggle="modal" data-target="#createParticipantModal">
+                                        #{strings.createParticipantList}</button>
+                                </div>
+                            </div>
+                            <ui:repeat value="#{orgVoterBean.myParticipantList}" var="voterList" varStatus="varStatus">
+
+                                <div class="card-body col-12 ">
+                                    <div class="card">
+                                        <div class="card-header col-sm-12" id="poll_card_#{varStatus.index}"  data-target="#poll_body_#{varStatus.index}" >
+                                            <div class="col-6 text-left f-l font">
+                                                #{voterList.name}
+                                            </div>
+                                            <div class="col-6 text-right f-l font">
+                                                <button type="button" class="customLink" data-toggle="modal" data-target="#addParticipantItemModal_#{varStatus.index}">
+                                                    #{strings.add}</button>
+                                                <h:commandButton value="#{strings.delete}" class="customLink ml-2" action='#{orgVoterBean.deleteParticipantList(voterList.name)}'/>
+                                            </div>
+                                        </div>
+                                        <div id="poll_body_#{varStatus.index}" class="collapse show" aria-labelledby="poll_card_#{varStatus.index}">
+                                            <div class="card-body">
+                                                <div id="remove_participant_#{varStatus.index}" class="d-none">
+                                                    <h:commandLink action="#{orgVoterBean.removeParticipant(voterList.name)}">
+                                                        <f:param name="emailToBeRemoved" value="" />
+                                                    </h:commandLink>
+                                                </div>
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                        <th class="text-center">#</th>
+                                                        <th>Email</th>
+                                                        <th class="text-center">#{strings.action}</th>
+                                                        <ui:repeat value="#{voterList.emails}" var="email" varStatus="emailStatus">
+                                                            <tr>
+                                                                <th scope="row" class="text-center">#{emailStatus.index+1}</th>
+                                                                <td>#{email}</td>
+                                                                <td class="text-center">
+                                                                    <a href="#" onclick='deleteVoter(#{varStatus.index}, "#{email}")'>#{strings.delete}
+                                                                    </a>
+                                                                </td>
+                                                            </tr>      
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </div>                              
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- add participant item Modal -->
+                                <div class="modal fade" id="addParticipantItemModal_#{varStatus.index}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">#{strings.addParticipant}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label>#{strings.participantListName} </label>
+                                                    <h:inputText class="form-control" value="#{voterList.name}" disabled="true"></h:inputText>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label> #{strings.participantEmails} </label>
+                                                    <h:inputTextarea class="form-control" value="#{voterList.emailsList}"></h:inputTextarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <h:commandButton value="#{strings.create}" class="btn btn-primary" action='#{orgVoterBean.addParticipantToList(voterList)}' />
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">#{strings.close}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ui:repeat>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create participant list Modal -->
+                <div class="modal fade" id="createParticipantModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">#{strings.createParticipantList}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>#{strings.participantListName} </label>
+                                    <h:inputText class="form-control" value="#{orgVoterBean.createParticipantListInfoDto.name}" ></h:inputText>
+                                </div>
+                                <div class="form-group">
+                                    <label>#{strings.participantEmails} </label>
+                                    <h:inputTextarea class="form-control" value="#{orgVoterBean.createParticipantListInfoDto.emailsList}"></h:inputTextarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <h:commandButton value="#{strings.create}" class="btn btn-primary" action='#{orgVoterBean.addParticipantToList(orgVoterBean.createParticipantListInfoDto)}' />
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">#{strings.close}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </main>
+    </ui:define>
+
+    <ui:define name="scripts">
+        <script type="text/javascript">
+            function deleteVoter(index, email) {
+                var clickable = $("#remove_participant_" + index + " a");
+                clickable.attr("onclick", clickable.attr("onclick").replace("'emailToBeRemoved':''", "'emailToBeRemoved':'" + email + "'"));
+                clickable.click();
+            }
+        </script>
+    </ui:define>
+</ui:composition>

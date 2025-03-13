@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    template="/WEB-INF/templates/page-layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:t="http://primefaces.org/ui">   
+    <f:metadata>
+       
+        <f:viewParam name="pollId" value="#{orgPollInfoBean.selectedPollId}" />
+    </f:metadata>
+    <ui:define name="exception">
+        <input type="hidden" id="toastMessage" value="#{orgPollInfoBean.pageException}" />
+    </ui:define>
+    <ui:define name="styles">
+        <h:outputStylesheet name="tempusdominus-bootstrap-4.min.css" library="css" />
+    </ui:define>
+    <ui:define name="header">
+        <ui:include src="/pages/organizer/menus.xhtml" />
+    </ui:define>
+    <ui:define name="content">
+
+        <main role="main" class="dashboard col-md-9 ml-sm-auto col-lg-10 pt-3 px-4" >
+            <h:form>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">&nbsp;Organizer</li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <a href="polls.xhtml">&nbsp;#{strings.pollList}</a>
+                    </li> 
+                    <li class="breadcrumb-item active" aria-current="page">#{strings.pollDetails}</li>
+                  </ul>
+
+
+                <div class="card mb-12 shadow-sm">
+
+                    <!-- Poll details -->
+                    <div class="card-header d-back">
+                       
+                    </div>
+                    <div class="card-body">
+                        <div> 
+                            <ul>
+                                <li>
+                                    <span>#{strings.title}</span> #{orgPollInfoBean.getSelectedPoll().title}
+                                </li>
+                                <li>
+                                    <span>#{strings.description}</span> #{orgPollInfoBean.getSelectedPoll().description}
+                                </li>
+                                <li>
+                                     #{orgPollInfoBean.getSelectedPoll().state}
+                                </li>
+                                <li> 
+                                    <span>#{strings.startDateTitle}</span>#{orgPollInfoBean.getSelectedPoll().startDateString}
+                                </li>
+                                <li> 
+                                    <span>#{strings.endDateTitle}</span>#{orgPollInfoBean.getSelectedPoll().endDateString}
+                                </li>
+                                
+                            </ul>
+                        </div>   
+
+                        <!-- View-itemsList -->
+                        <div class="row">
+                            <div class=" col-sm-12">
+                                <div class="col-sm-12 text-right f-l font">
+                                    <!-- Add-itemsList -->
+                                    <button type="button" class="btn btn-primary btn-sm " data-toggle="modal" data-target="#createQuestion">
+                                        #{strings.addQuestion}</button>
+                                    <hr></hr>
+                                </div>
+                            </div>
+                            <h:panelGroup rendered="#{orgPollInfoBean.pollQuestions.size()==0}">
+                                <div class="card-body">
+                                    <div class="alert alert-warning custom" role="alert">
+                                        #{strings.noQuestionInPoll}
+                                    </div>
+                                </div>                                        
+                            </h:panelGroup>
+                            <ui:repeat value="#{orgPollInfoBean.pollQuestions}" var="question" varStatus="varStatus">
+                                <div class="card-body col-xl-12 ">
+                                    <div class="card">
+                                        <div class="card-header col-sm-12" id="item_card_#{question.id}"  data-target="#item_body_#{question.id}">
+                                            <div class="col-4 text-left f-l font">
+                                                <h5>#{strings.question} # #{varStatus.index + 1}</h5>
+                                            </div>
+                                            <div class="col-8 text-right f-l font">
+                                                <h:panelGroup layout="block">
+                                                    <button type="button" class="customLink" data-toggle="modal" data-target="#editQuestionModal_#{question.id}" >
+                                                         #{strings.edit}
+                                                    </button>
+                                                </h:panelGroup>
+                                                <h:panelGroup layout="block">
+                                                    <button type="button" class="customLink" data-toggle="modal"  data-target="#deleteItemModal_#{question.id}">
+                                                         #{strings.delete}
+                                                    </button>
+                                                </h:panelGroup>
+                                            </div>
+                                        </div>
+                                        <div id="#item_body_#{question.id}" class="collapse show" aria-labelledby="item_card_#{question.id}">
+                                            <div class="card-body item-body pl-0 pb-0">
+                                                <ul>
+                                                    <li> #{strings.itemDetailTitle} #{question.title}</li>
+                                                    <li> #{strings.maxAnswerTitle}  #{question.maxAnswers}</li>
+                                                    <li> #{strings.decisionModeTitle} #{question.decisionMode}</li>
+                                                </ul>
+                                            </div>
+                                            <div class="card-body">  
+                                                <div class="text-right">
+                                                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#addOptionModal_#{question.id}">
+                                                        #{strings.addOption}
+                                                    </button>
+                                                    <br></br>
+                                                </div>
+                                                <h:panelGroup rendered="#{question.itemsList.size()==0}">
+                                                    <div class="alert alert-warning custom" role="alert">
+                                                        #{strings.noOptionInQuestion}
+                                                    </div>
+
+                                                </h:panelGroup>
+                                               
+                                                <t:dataTable value="#{question.itemsList}" var="item">
+                                                    <t:column headerText="#{strings.title}">
+                                                        <h:outputText value="#{item.name}"/>
+                                                    </t:column>
+                                                    <t:column headerText="#{strings.description}">
+                                                        <h:outputText value="#{item.description}"/>
+                                                    </t:column>
+                                                    <t:column headerText="#{strings.action}">
+                                                        <h:commandButton value="#{strings.delete}" class="customLink" action='#{orgPollInfoBean.deleteItem(item.id)}' />
+                                                    </t:column>
+                                                </t:dataTable>
+                                                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Add option Modal -->
+                                <div class="modal fade" id="addOptionModal_#{question.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">#{strings.addOption}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label>#{strings.itemDetailTitle} </label>
+                                                    <h:inputText class="form-control" value="#{question.createItemInfo.name}" ></h:inputText>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>#{strings.description} </label>
+                                                    <h:inputTextarea class="form-control" value="#{question.createItemInfo.description}" ></h:inputTextarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <h:commandButton value="#{strings.add}" class="btn btn-primary" action='#{orgPollInfoBean.addItem(question.createItemInfo)}'/>                                                                                   
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">#{strings.close}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Edit Item Modal -->
+                                <div class="modal fade" id="editQuestionModal_#{question.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">#{strings.editQuestion}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label>#{strings.itemDetailTitle} </label>
+                                                    <h:inputText class="form-control" value='#{question.title}'></h:inputText>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>#{strings.maxAnswerTitle}</label>
+                                                    <h:inputText class="form-control" value='#{question.maxAnswers}' ></h:inputText>
+                                                </div>
+                                              
+                                                <div class="form-group">
+                                                    <label>#{strings.decisionModeTitle}</label>
+                                                    <h:selectOneMenu class="form-control" value="#{question.decisionMode}">
+                                                        <f:selectItem itemValue = "" itemLabel = "--#{strings.nothingSelected}--" />
+                                                        <f:selectItem itemValue = "ABSOLUTE_MAJORITY" itemLabel = "Absolute Majority" /> 
+                                                        <f:selectItem itemValue = "RELATIVE_MAJORITY" itemLabel = "Relative Majority" /> 
+                                                        <f:selectItem itemValue = "SIMPLE_MAJORITY" itemLabel = "Simple Majority" /> 
+                                                    </h:selectOneMenu>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-light btn-sm" data-dismiss="modal"> <i class="fas fa-times mr-2 "></i>#{strings.close}</button>
+                                                <h:commandButton value="#{strings.edit}" class="btn btn-primary btn-sm"  action='#{orgPollInfoBean.editQuestion(question)}' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Delete Item Modal -->
+                                <div class="modal fade" id="deleteItemModal_#{question.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">#{strings.deleteItem}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="#{strings.close}">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <i class="fas fa-exclamation-triangle text-warning mr-2 "></i>#{strings.deleteConfirmation}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-light btn-sm" data-dismiss="modal"> <i class="fas fa-times mr-2 "></i>#{strings.close}</button>
+                                                <h:commandButton value="Delete" class="btn btn-danger btn-sm" action='#{orgPollInfoBean.deleteQuestion(question.id)}'/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ui:repeat>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Add Question Modal -->
+                <div class="modal fade" id="createQuestion" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">#{strings.addItem} </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="#{strings.close}">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>#{strings.itemDetailTitle} </label>
+                                    <h:inputText class="form-control" value='#{orgPollInfoBean.createQuestionDto.title}'></h:inputText>
+                                </div>
+                                <div class="form-group">
+                                    <label>#{strings.maxAnswerTitle}</label>
+                                    <h:inputText class="form-control" value='#{orgPollInfoBean.createQuestionDto.maxAnswers}' ></h:inputText>
+                                </div>
+                                <div class="form-group">
+                                    <h:selectOneMenu id="optionType"  >
+                                        <f:selectItems value="#{orgPollInfoBean.optionType}" var="mode" itemValue="#{mode}" itemLabel="#{mode}" />
+                                    </h:selectOneMenu>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>#{strings.decisionModeTitle}</label>
+                                    <h:selectOneMenu class="form-control" value="#{orgPollInfoBean.createQuestionDto.decisionMode}">
+                                        <f:selectItem itemValue = "" itemLabel = "--#{strings.nothingSelected}--" />
+                                        <f:selectItem itemValue = "ABSOLUTE_MAJORITY" itemLabel = "Absolute Majority" /> 
+                                        <f:selectItem itemValue = "RELATIVE_MAJORITY" itemLabel = "Relative Majority" /> 
+                                        <f:selectItem itemValue = "SIMPLE_MAJORITY" itemLabel = "Simple Majority" /> 
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <h:commandButton value="#{strings.add}" class="btn btn-primary btn-sm"  action='#{orgPollInfoBean.createQuestion()}' />    
+                                <button type="button" class="btn btn-light btn-sm" data-dismiss="modal"> <i class="fas fa-times mr-2 "></i>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </main>
+    </ui:define>
+</ui:composition>
