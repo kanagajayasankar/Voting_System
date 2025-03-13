@@ -46,7 +46,7 @@ python main.py
 ```bash
 flask run
 ```
-## If it's a web-based app, open http://127.0.0.1:5000/ in your browser
-## If it's a command-line app, follow the on-screen instructions.
-## This project is open-source and available under the MIT License.
+### If it's a web-based app, open http://127.0.0.1:5000/ in your browser
+### If it's a command-line app, follow the on-screen instructions.
+### This project is open-source and available under the MIT License.
 
