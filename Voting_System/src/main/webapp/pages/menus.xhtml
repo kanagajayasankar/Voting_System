@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:form>
+        <nav id="navbartop" class="navbar navbar-expand navbar-dark sticky-top flex-md-nowrap p-0" style="background-color: lightgreen">
+            <a class="navbar-brand col-sm-3 col-md-2 mr-0">
+                <strong class="text-white">
+                    ADMIN
+                </strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0 mr-4">
+                    <li class="nav-item dropdown">
+                        <span class="text-white">
+                            <h:commandLink action="#{loginBean.setLocaleEn()}">
+                                <h:graphicImage name="images/flag_en.png" />
+                            </h:commandLink>|
+                            <h:commandLink action="#{loginBean.setLocaleDe()}">
+                                <h:graphicImage name="images/flag_de.png" />
+                            </h:commandLink>|
+                            #{orgPollBean.organizerPerson.fullName} |
+                            <h:commandLink action="#{loginBean.logout()}">
+                                <i class="fas fa-sign-out-alt text-success"></i> 
+                            </h:commandLink> 
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                    <div class="sidebar-sticky">
+                        <ul class="nav flex-column mb-2">
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="polls.xhtml">
+                                    #{strings.pollList}
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>
