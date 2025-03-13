@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="EvsIndia:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>EvsIndia</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="EvsIndia-1.0.war">
+      <element id="artifact" artifact-name="EvsIndia:war exploded" />
+    </root>
+  </artifact>
+</component>
