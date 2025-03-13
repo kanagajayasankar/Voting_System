@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Voting System" />
+    <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/vote.png']}"/>
+    <h:outputStylesheet name="bootstrap.min.css" library="css" />
+    <h:outputStylesheet name="fontawesome.min.css" library="css" />
+    <h:outputStylesheet name="toastr.min.css" library="css" />
+    <h:outputStylesheet name="style.css" library="css" />
+    <title>Voting System</title>
+    <ui:insert name="styles" />
+</h:head>
+
+<h:body>
+    <f:view locale="#{loginBean.viewLocale}">
+        <ui:insert name="exception"></ui:insert>
+        <ui:insert name="header" />
+        <ui:insert name="content" />
+        <ui:insert name="footer" />
+    </f:view>
+    <!--SCRIPTS-->
+    <h:outputScript library = "js" name = "jquery-3.2.1.min.js" />
+    <h:outputScript library = "js" name = "bootstrap.min.js" />
+    <h:outputScript library = "js" name = "toastr.min.js" />
+    <h:outputScript library = "js" name = "moment.min.js" />
+    <ui:insert name="scripts" />
+    <script type="text/javascript">
+        $(function () {
+            if ($('toastMessage')) {
+                if ($('#toastMessage').val()) {
+                    toastr.error($('#toastMessage').val());
+                }
+            }
+        });
+    </script>
+</h:body>
+</html>
