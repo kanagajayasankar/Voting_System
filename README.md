@@ -1,11 +1,15 @@
 # 🗳️ Voting System  
 
-## 📌 About This Project  
-This is a project I originally worked on and contributed to in 2021.  
-Due to the accidental deletion of my previous GitHub account, I am re-uploading it here.  
+## 📌 About This Project    
 
 This is a **Voting System** developed to allow users to **cast votes, tally results, and manage elections securely.** 
 The system is designed to ensure **fairness, transparency, and ease of use** for all voters.  
+
+This is a project I originally worked on and contributed to in 2021.  
+Due to the accidental deletion of my previous GitHub account, I am re-uploading it here.
+
+## 💡 Why Re-Upload?  
+Since my old GitHub was deleted, I wanted to ensure this project remains accessible in my portfolio. 
 
 ## 🔍 Project Details
 - **Project Name:** Voting System
