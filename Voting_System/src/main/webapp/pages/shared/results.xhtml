@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    template="/WEB-INF/templates/page-layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"   
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewParam name="publishKey" value="#{voterResultBean.publishKey}" />
+    </f:metadata>
+    <ui:define name="exception">
+        <input type="hidden" id="toastMessage" value="#{voterResultBean.pageException}" />
+    </ui:define>
+    <ui:define name="styles">
+        <h:outputScript library = "js" name = "chart.min.js" />
+        <h:outputScript library = "js" name = "palette.js" />
+    </ui:define>
+
+    <ui:define name="content">
+        <main role="main" class="dashboard col-md-12 ml-sm-auto col-lg-12 pt-3 px-4" >
+            <h:form>
+                <!-- Poll Results -->
+                <div class="pb-4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-12 text-right f-l font">
+                                <a class="btn btn-warning btn-xs"  onclick='print()'>
+                                    <i class="fas fa-print mr-2"></i>Print 
+                                </a>                                                                     
+                            </div>
+                        </div>
+                        <div class="card ibox offset-lg-1 col-lg-10 offset-lg-1 shadow-sm">
+                            <div class="card-header bg-light">
+                                <div class="row col-sm-12">
+                                    <div class="col-6 text-left f-l font">
+                                        <h5><strong>#{voterResultBean.selectedPoll.title}</strong></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body bg-white">
+                                <div class="row">
+                                    <div class="col-sm-6"> 
+                                        <ul>
+                                            <li> <span>#{strings.startDateTitle} </span>#{voterResultBean.selectedPoll.startDateString}</li>
+                                            <li> <span>#{strings.endDateTitle} </span>#{voterResultBean.selectedPoll.endDateString}</li>
+                                            <li>
+                                                #{voterResultBean.selectedPoll.description}
+                                            </li>
+                                        </ul>
+                                    </div> 
+                                    <div class="col-sm-6"> 
+                                        <canvas id="participantsChart"></canvas>
+                                    </div>
+                                </div>
+                                <nav>
+                                    <div class="nav nav-tabs" role="tablist">
+                                        <ui:repeat value="#{voterResultBean.selectedPoll.questionResults}" var="question" varStatus="questionStatus">
+                                            <a class="nav-item nav-link #{questionStatus.index == 0? 'active' : ''}" data-toggle="tab" href="#nav-question_#{questionStatus.index}" role="tab" aria-controls="nav-question_#{questionStatus.index}" aria-selected="true">Question ##{questionStatus.index + 1}</a>
+                                        </ui:repeat>
+                                    </div>
+                                </nav>
+                                <div class="tab-content">
+                                    <ui:repeat value="#{voterResultBean.selectedPoll.questionResults}" var="question" varStatus="questionStatus">
+                                        <div class="tab-pane #{questionStatus.index == 0? 'active' : ''}" id="nav-question_#{questionStatus.index}" role="tabpanel">
+                                            <div class="card">
+                                                <div class="row">
+                                                    <div class="col-lg-7">
+                                                        <div class="card-body">
+
+                                                            <div class="mt-1">
+                                                                <h6>#{question.title}</h6>
+                                                            </div>          
+
+                                                            <ul class="mt-4">
+                                                                <li> 
+                                                                    <span>Mode: </span>
+                                                                    #{question.decisionMode == "RELATIVE_MAJORITY" ? "Relative Majority":""}
+                                                                    #{question.decisionMode == "ABSOLUTE_MAJORITY" ? "Absolute Majority":""}
+                                                                    #{question.decisionMode == "SIMPLE_MAJORITY" ? "Simple Majority":""}
+                                                                </li>
+                                                                <li>
+                                                                    <span>Decision: </span>
+                                                                    #{question.decisionItem == null ? "-": question.decisionItem.name}
+                                                                </li>
+                                                                <li> 
+                                                                    <span>Absentation :</span>
+                                                                    <div class="progress mt-1" style="height: 20px;">
+                                                                        <div class="progress-bar bg-success" role="progressbar" style="width: #{question.votesCount/question.participantsCount*100}%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">Submitted (#{question.votesCount})</div>
+                                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: #{question.absentationsCount/question.participantsCount*100}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">Absent (#{question.absentationsCount})</div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+
+                                                            <div class="mt-4 option-bb">
+                                                                <h6>Options</h6>
+                                                            </div>
+
+                                                            <div class="card mt-3">
+                                                                <table class="table table-striped">
+                                                                    <thead class="thead-dark">
+                                                                        <tr>
+                                                                            <th scope="col">#</th>
+                                                                            <th scope="col">Title</th>
+                                                                            <th scope="col">Description</th>
+                                                                            <th scope="col">#Votes</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <ui:repeat value="#{question.itemResults}" var="item" varStatus="itemStatus">
+                                                                            <tr>
+                                                                                <td>#{itemStatus.index + 1}</td>
+                                                                                <td>#{item.name}</td>
+                                                                                <td>#{item.description}</td>
+                                                                                <td>#{item.voteCounts}</td>
+                                                                            </tr>    
+                                                                        </ui:repeat>                                                                                
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5 mt-5"> 
+                                                        <canvas id="questionChart_#{questionStatus.index}"></canvas>
+                                                        <script type="text/javascript">
+                                                            new Chart(document.getElementById("questionChart_#{questionStatus.index}").getContext('2d'), {
+                                                                type: 'bar',
+                                                                data: {
+                                                                    labels: [#{question.itemTitles}],
+                                                                    datasets: [{
+                                                                            label: ['# of Votes'],
+                                                                            data: [#{question.itemVotes}],
+                                                                            backgroundColor: 'rgba(0, 0, 255, 100)'
+                                                                        }]
+                                                                },
+                                                                options: {
+                                                                    scales: {
+                                                                        yAxes: [{
+                                                                                ticks: {
+                                                                                    beginAtZero: true
+                                                                                }
+                                                                            }]
+                                                                    }
+                                                                }
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ui:repeat>                                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </main>
+    </ui:define>
+    <ui:define name="scripts">                
+        <script type="text/javascript">
+            var participantsChart2d = document.getElementById("participantsChart").getContext('2d');
+            var myLineChart = new Chart(participantsChart2d, {
+                type: 'pie',
+                data: {
+                    labels: ["Voted", "Not-Voted"],
+                    datasets: [{
+                            data: [#{voterResultBean.selectedPoll.submittedVotes},#{voterResultBean.selectedPoll.numOfInvitations - voterResultBean.selectedPoll.submittedVotes}],
+                            backgroundColor: palette('cb-Accent', 2).map(function (hex) {
+                                return '#' + hex;
+                            })
+                        }]
+                }
+            });
+        </script>
+    </ui:define>
+</ui:composition>
