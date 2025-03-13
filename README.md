@@ -2,7 +2,7 @@
 
 ## 📌 About This Project    
 
-This is a **Voting System** developed to allow users to **cast votes, tally results, and manage elections securely.** 
+This is a **Voting System** developed to allow users to **cast votes, tally results, and manage elections online securely.** 
 The system is designed to ensure **fairness, transparency, and ease of use** for all voters.  
 
 This is a project I originally worked on and contributed to in 2021.  
