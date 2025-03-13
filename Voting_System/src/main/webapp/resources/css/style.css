@@ -1,0 +1,472 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 5, 2019, 10:14:02 AM
+    Author     : lion
+*/
+
+body {
+    font-size: .875rem;
+}
+
+.feather {
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
+}
+
+.fa-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.f-l{
+    float: left;
+}
+
+/*Header section*/
+#navbartop .nav-item .fas{
+    /*color: #fff;*/
+}
+
+#navbartop .nav-item .badge{
+    position: relative;
+    top: -10px;
+    left: 0;
+}
+/* Ends Header section*/
+
+/*Dashboard page (index.jsp)*/
+.dashboard .info-box {
+    display: block;
+    min-height: 90px;
+    background: #fff;
+    width: 100%;
+    /* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); */
+    border-radius: 2px;
+    margin-bottom: 15px;
+}
+
+.dashboard .fas i > .fa-home{
+    color: #444242;
+}
+
+.dashboard .info-box-content {
+    padding: 5px 10px;
+    margin-left: 90px;
+}
+
+.dashboard .progress-description,
+.dashboard .info-box-text {
+    display: block;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dashboard .info-box-number {
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.dashboard .info-box-icon {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 2px;
+    display: block;
+    float: left;
+    height: 88px;
+    width: 90px;
+    text-align: center;
+    font-size: 45px;
+    line-height: 90px;
+    /* background: rgba(0, 0, 0, 0.2); */
+}
+
+/*Ends: Dashboard page (index.jsp)*/
+
+/*Notifications*/
+ul.timeline {
+    list-style-type: none;
+    position: relative;
+}
+ul.timeline:before {
+    content: ' ';
+    background: #d4d9df;
+    display: inline-block;
+    position: absolute;
+    left: 29px;
+    width: 2px;
+    height: 100%;
+    z-index: 400;
+}
+ul.timeline > li {
+    margin: 20px 0;
+    padding-left: 20px;
+}
+ul.timeline > li:before {
+    content: ' ';
+    background: white;
+    display: inline-block;
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid #22c0e8;
+    left: 20px;
+    width: 20px;
+    height: 20px;
+    z-index: 400;
+}
+/*Notifications*/
+
+/*---------Sidbar---------*/
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    /* Behind the navbar */
+    padding: 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 48px;
+    /* Height of navbar */
+    height: calc(100vh - 48px);
+    padding-top: 3.5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* Scrollable contents if viewport is shorter than content. */
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+}
+
+.sidebar .nav-link .feather {
+    margin-right: 4px;
+    color: #999;
+}
+
+.sidebar .nav-link.active {
+    color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+    color: inherit;
+}
+
+.sidebar-heading {
+    font-size: .75rem;
+    text-transform: uppercase;
+}
+/*---------Ends Sidbar---------*/
+
+/*
+   * Navbar
+   */
+
+.navbar-brand {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+    font-size: 1rem;
+    background-color: rgba(0, 0, 0, .25);
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+
+.navbar .form-control {
+    padding: .75rem 1rem;
+    border-width: 0;
+    border-radius: 0;
+}
+
+.form-control-dark {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+    border-color: transparent;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+/*
+   * Utilities
+   */
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* organizer poll
+
+.btn-xs{
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+.btn-sm {
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+}*/
+
+.card-header .font{
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.card-body ul{
+    list-style-type: circle;
+}
+
+.card-body ul li>span,
+.card-body ul li>div,
+.item-detail ul li>span,
+.item-detail ul li>div
+{
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 7px
+}
+
+.badge-secondary {
+    background-color: #9da3a9 !important;
+}
+
+.partno-bg{
+    background-color: #3078bf ;
+    color: white;
+}
+
+.list-group{
+    max-height: 200px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+button.btn-trs{
+    background-repeat:no-repeat !important;
+    border: none !important;
+    cursor:pointer !important;
+    overflow: hidden !important;
+    outline:none !important;
+}
+
+.delete-icon {
+    position:relative;
+}    
+.delete-icon:before {
+    content: "\25AE";  /* this is your text. You can also use UTF-8 character codes as I do here */
+    font-family: FontAwesome 5 Free;
+    left:-5px;
+    position:absolute;
+    top:0;
+}
+
+.item-detail {
+    padding: 18px 20px 43px 25px;
+    border-top: 5px solid #85afb7;
+}
+.f-08{
+    font-size: 0.88em;
+}
+
+.shadow-sm{
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+}
+
+.card-body.item-body ul>li {
+    list-style:none;
+}
+
+.btn-group-sm>.btn, .btn-xs {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+}
+
+.d-back{
+    background-color:#d2dee4
+}
+
+.input-xs {
+    height: 22px;
+    padding: 2px 5px;
+    font-size: 12px;
+    line-height: 1.5; /* If Placeholder of the input is moved up, rem/modify this. */
+    border-radius: 3px;
+}
+
+.votepage-question .title{
+    border-bottom: 3px solid #eaac64;
+    font-size: 21px;
+    font-family: tahoma;
+    font-weight: bold;
+}
+
+.box-vote{
+    border-top: 4px solid #e4dddd;
+}
+
+.vote-token{
+    text-align: center;
+}
+
+.vote-body{
+    border: 2px dotted #efeeee;
+}
+
+.votepage-question{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.vote-list.small-list {
+    font-size: 12px;    
+}
+
+.vote-list.small-list td {
+    display: block;
+}
+
+.vote-list.small-list td input{
+    margin-right: 4px;
+}
+
+
+.vote-list.small-list table {
+    width: 100%;
+}
+
+.vote-list {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+
+.vote-list.small-list td {
+    background: #f3f3f4;
+    margin-bottom: 2px;
+    padding: 6px 6px 6px 12px;
+}
+
+.votepage {
+    border: 2px solid #e0dcdc;
+}
+
+.container>.jumbotron{
+    margin-top: 70px;
+}
+
+.ibox {
+    clear: both;
+    margin-bottom: 25px;
+    margin-top: 0;
+    padding: 0;
+}
+
+.ibox-content {
+    background-color: #ffffff;
+    color: inherit;
+    padding: 15px 20px 20px 20px;
+    border-color: #e7eaec;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 0;
+}
+
+.ibox-content {
+    clear: both;
+}
+
+.wrapper {
+    padding: 0 20px;
+}
+
+.ibox {
+    background-color: #f3efef;
+    margin-top: 16px;
+    border-radius: 0px;
+    border-color: #e3ece9;
+}
+
+.nav-item.nav-link.active {
+    border-bottom: 1px solid #dee2e6 !important;
+    background-color: #f4f6f7;
+}
+
+.card-header .option{
+    border-bottom: none; 
+}
+
+.option-p{
+    padding: 4px 8px;
+}
+
+.bg-option{
+    background-color: #dbdc74;
+}
+
+.option-bb{
+    border-bottom: 3px solid #de9b1f;
+}
+
+.box {
+    box-shadow: 0px 0px 10px #000;
+    height: 5em;
+    width: 5em;
+}
+.box-icon {
+    position: relative;
+}
+
+.alert-warning.custom{
+    border: 1px dashed #d2ad40 !important;
+    border-left: 4px solid #d2ad40!important;
+    border-radius: 0px!important;
+    font-weight: 700;
+}
+
+.preview-iframe {
+    width: 100%;
+    height: 500px;
+    overflow: auto;
+}
+
+.modal-xl {
+    width: 90%;
+    max-width:1200px;
+}
+
+.customLink{
+    background: none!important;
+  border: none;
+  padding: 0!important;
+  /*optional*/
+  font-family: arial, sans-serif;
+  /*input has OS specific font-family*/
+  color: #069;
+  text-decoration: underline;
+  cursor: pointer;
+}
